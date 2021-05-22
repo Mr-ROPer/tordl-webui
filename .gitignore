@@ -1,0 +1,5 @@
+**/__pycache__
+# Symlink to get rid of import nag.
+# Ideally, this should work without it.
+ws/tordl
+MANIFEST

@@ -1,0 +1,67 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>tordl</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	</head>
+	<body>
+		<div>
+			<input name="search" type="search" value="" style="margin: 1em;"/>
+		</div>
+
+		<table>
+			<thead>
+				<tr>
+					<td>
+						<b>Name:</b>
+					</td>
+					<td>
+						<b>Link:</b>
+					</td>
+					<td>
+						<b>Magnet:</b>
+					</td>
+					<td>
+						<b>Origin:</b>
+					</td>
+					<td>
+						<b>Seeders:</b>
+					</td>
+					<td>
+						<b>Leechers:</b>
+					</td>
+					<td>
+						<b>Size:</b>
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for row in rows %}
+				<tr>
+					<td>{{ row['name'] }}</td>
+					<td>
+						{% for l in row['links'] %}
+						<a href="{{ row['links'][l] }}">{{ l }}</a>
+						{% endfor %}
+					</td>
+					<td>
+						<a href="{{ row['magnet'] }}">Magnet</a>
+					</td>
+					<td>
+						{% for o in row['origins'] %}
+						<span>{{ o }}</span>
+						{% endfor %}
+					</td>
+					<td>{{ row['seeds'] }}</td>
+					<td>{{ row['leeches'] }}</td>
+					<td>{{ row['size'] }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</body>
+</html>
