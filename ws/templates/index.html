@@ -12,42 +12,28 @@
 		</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-
+		<link type="text/css" href="{{ url_for('static', filename='styles/main.css') }}" rel="stylesheet"/>
 	</head>
 	<body>
 		<!-- Send query as POST request to flask server. -->
 		<!-- Could maybe directly POST to the RPC server. -->
 		<!-- Though, same-origin policy would likely make that a pain. -->
-		<form method="POST">
-			<input name="search" type="search" value="{{ search_query }}" style="margin: 1em;"/>
-			<input type="submit"/>
+		<form id="search" method="POST">
+			<input id="search-bar" name="search" type="search" value="{{ search_query }}"/>
+			<input id="search-btn" type="submit"/>
 		</form>
 
 		{% if rows %}
 		<table>
 			<thead>
 				<tr>
-					<td>
-						<b>Name:</b>
-					</td>
-					<td>
-						<b>Link:</b>
-					</td>
-					<td>
-						<b>Magnet:</b>
-					</td>
-					<td>
-						<b>Origin:</b>
-					</td>
-					<td>
-						<b>Seeders:</b>
-					</td>
-					<td>
-						<b>Leechers:</b>
-					</td>
-					<td>
-						<b>Size:</b>
-					</td>
+					<td>Name:</td>
+					<td>Link:</td>
+					<td>Magnet:</td>
+					<td>Origin:</td>
+					<td>Seeders:</td>
+					<td>Leechers:</td>
+					<td>Size:</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -58,7 +44,7 @@
 					</td>
 					<td>
 						{% for l in row['links'] %}
-						<a href="{{ row['links'][l] }}">{{ l }}</a>
+						<a href="{{ l }}">{{ l }}</a>
 						{% endfor %}
 					</td>
 					<td>
