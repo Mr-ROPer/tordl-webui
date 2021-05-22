@@ -3,16 +3,27 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
-		<title>tordl</title>
+		<!-- Display search query in title when provided -->
+		<title>
+		    tordl
+		    {% if search_query %}
+		    - {{ search_query }}
+		    {% endif %}
+		</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	</head>
 	<body>
-		<div>
-			<input name="search" type="search" value="" style="margin: 1em;"/>
-		</div>
+		<!-- Send query as POST request to flask server. -->
+		<!-- Could maybe directly POST to the RPC server. -->
+		<!-- Though, same-origin policy would likely make that a pain. -->
+		<form method="POST">
+			<input name="search" type="search" value="{{ search_query }}" style="margin: 1em;"/>
+			<input type="submit"/>
+		</form>
 
+		{% if rows %}
 		<table>
 			<thead>
 				<tr>
@@ -42,7 +53,9 @@
 			<tbody>
 				{% for row in rows %}
 				<tr>
-					<td>{{ row['name'] }}</td>
+					<td>
+						<span class="name">{{ row['name'] }}</span>
+					</td>
 					<td>
 						{% for l in row['links'] %}
 						<a href="{{ row['links'][l] }}">{{ l }}</a>
@@ -53,15 +66,22 @@
 					</td>
 					<td>
 						{% for o in row['origins'] %}
-						<span>{{ o }}</span>
+						<span class="origin">{{ o }}</span>
 						{% endfor %}
 					</td>
-					<td>{{ row['seeds'] }}</td>
-					<td>{{ row['leeches'] }}</td>
-					<td>{{ row['size'] }}</td>
+					<td>
+						<span class="seeds">{{ row['seeds'] }}</span>
+					</td>
+					<td>
+						<span class="leeches">{{ row['leeches'] }}</span>
+					</td>
+					<td>
+						<span class="size">{{ row['size'] }}</span>
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
+		{% endif %}
 	</body>
 </html>
