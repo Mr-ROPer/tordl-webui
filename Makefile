@@ -6,17 +6,22 @@
 
 APP = ws
 
-TARGET = $(APP)/core
+CORE = $(APP)/core
 
+SASS_CC = sassc
 SASS_DIR = $(APP)/static/styles
 
-all: $(TARGET)
+all: $(CORE)
 
-CSS:
-	$(foreach SRC, $(wildcard $(SASS_DIR)/*.sass), sassc $(SRC) $(basename $(SRC)).css)
+# currently, it makes the most sense for `make` to run it after compilation.
+# this is subject to change once a stable release is ready.
+$(CORE): css run
 
-$(TARGET): CSS
-	FLASK_APP=$(TARGET) flask run
+css:
+	$(foreach src, $(wildcard $(SASS_DIR)/*.sass), $(SASS_CC) $(src) $(basename $(src)).css)
+
+run:
+	FLASK_APP=$(CORE) flask run
 
 clean:
 	rm $(wildcard $(SASS_DIR)/*.css)
