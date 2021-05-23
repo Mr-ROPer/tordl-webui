@@ -18,4 +18,6 @@ def search():
     query = request.form['search']
     response = run_api(query, loop=lp)
     j = json.loads(response)
-    return render_template('index.html', search_query=query, rows=j['result'])
+
+    res = sorted(j['result'], key=lambda x: x['seeds'], reverse=True)
+    return render_template('index.html', search_query=query, rows=res)
