@@ -9,9 +9,19 @@ from tordl.func import run_api
 app = Flask(__name__)
 lp = asyncio.get_event_loop()
 
+columns = {
+    'name': 'Name',
+    'links': 'Link',
+    'magnet': 'Magnet',
+    'origins': 'Origin',
+    'seeds': 'Seeders',
+    'leeches': 'Leechers',
+    'size': 'Size'
+}
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', cols=columns)
 
 @app.route('/', methods=['POST'])
 def search():
@@ -19,5 +29,14 @@ def search():
     response = run_api(query, loop=lp)
     j = json.loads(response)
 
-    res = sorted(j['result'], key=lambda x: x['seeds'], reverse=True)
-    return render_template('index.html', search_query=query, rows=res)
+    sort = request.form['sort-by']
+    sort_rev = request.form['sort-order'] == 'descending'
+
+    res = sorted(j['result'], key=lambda x: x[sort], reverse=sort_rev)
+    return render_template(
+        'index.html',
+        cols=columns,
+        query=query,
+        res=res,
+        sort=sort
+    )

@@ -19,25 +19,36 @@
 		<!-- Could maybe directly POST to the RPC server. -->
 		<!-- Though, same-origin policy would likely make that a pain. -->
 		<form id="search" method="POST">
-			<input id="search-bar" name="search" type="search" value="{{ search_query }}"/>
-			<input id="search-btn" type="submit"/>
+			<input id="search-bar" name="search" type="search" value="{{ query }}"/>
+			<label>Sort by:
+				<select id="sort" name="sort-by">
+					{% for c in cols %}
+					<option value="{{ c }}" {% if sort == c %} selected {% endif %}>
+						{{ cols[c] }}
+					</option>
+					{% endfor %}
+				</select>
+			</label>
+			<label>Order:
+				<select id="order" name="sort-order">
+					<option value="ascending">Ascending</option>
+					<option value="descending">Descending</option>
+				</select>
+			</label>
+			<input id="search-btn" type="submit" value="Search"/>
 		</form>
 
-		{% if rows %}
+		{% if res %}
 		<table>
 			<thead>
 				<tr>
-					<td>Name:</td>
-					<td>Link:</td>
-					<td>Magnet:</td>
-					<td>Origin:</td>
-					<td>Seeders:</td>
-					<td>Leechers:</td>
-					<td>Size:</td>
+					{% for c in cols %}
+					<td>{{ cols[c] }}:</td>
+					{% endfor %}
 				</tr>
 			</thead>
 			<tbody>
-				{% for row in rows %}
+				{% for row in res %}
 				<tr>
 					<td>
 						<span class="name">{{ row['name'] }}</span>
